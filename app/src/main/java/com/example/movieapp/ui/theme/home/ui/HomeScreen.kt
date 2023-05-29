@@ -1,4 +1,4 @@
-package com.example.movieapp.home.ui
+package com.example.movieapp.ui.theme.home.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.movieapp.R
-import com.example.movieapp.domain.MovieResult
-import com.example.movieapp.home.HomeViewModel
-import com.example.movieapp.home.rememberStateWithLifecycle
+import com.example.movieapp.domain.search.model.MovieResult
+import com.example.movieapp.ui.theme.home.HomeViewModel
+import com.example.movieapp.ui.theme.home.rememberStateWithLifecycle
 
 @Composable
 fun HomeScreen(navController: NavController) {

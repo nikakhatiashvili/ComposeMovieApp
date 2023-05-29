@@ -1,4 +1,4 @@
-package com.example.movieapp.home.ui
+package com.example.movieapp.ui.theme.home.ui
 
 import android.util.Log.d
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.movieapp.Screen
-import com.example.movieapp.domain.MovieResult
+import com.example.movieapp.domain.search.model.MovieResult
 
 @Composable
 fun SingleRectangularCarousel(records: List<MovieResult>, navController: NavController) {
@@ -22,7 +22,6 @@ fun SingleRectangularCarousel(records: List<MovieResult>, navController: NavCont
     ) {
         items(records) { record ->
             RectangularItem(record) {
-                d("sadsdasdasdasdasdas",it.toString())
                 navController.navigate(Screen.DetailScreen.withArgs(it))
             }
         }

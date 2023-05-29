@@ -1,4 +1,4 @@
-package com.example.movieapp.home
+package com.example.movieapp.ui.theme.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State

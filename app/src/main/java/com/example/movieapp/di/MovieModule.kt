@@ -2,9 +2,9 @@ package com.example.movieapp.di
 
 import com.example.movieapp.domain.Constants.BASE_URL
 import com.example.movieapp.data.MoviesRepositoryImpl
-import com.example.movieapp.domain.GetMoviesUseCase
-import com.example.movieapp.domain.MoviesRepository
-import com.example.movieapp.domain.SearchService
+import com.example.movieapp.domain.search.GetMoviesUseCase
+import com.example.movieapp.domain.search.MoviesRepository
+import com.example.movieapp.domain.search.SearchService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -39,7 +39,7 @@ object MovieModule {
     }
 
     @Provides
-    fun provideMovieRepository(searchService: SearchService):MoviesRepository {
+    fun provideMovieRepository(searchService: SearchService): MoviesRepository {
         return MoviesRepositoryImpl(searchService)
     }
 }

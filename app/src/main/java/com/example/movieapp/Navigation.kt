@@ -12,7 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.movieapp.home.ui.HomeScreen
+import com.example.movieapp.ui.theme.detail.DetailScreen
+import com.example.movieapp.ui.theme.home.ui.HomeScreen
 
 @Composable
 fun Navigation() {
@@ -33,18 +34,6 @@ fun Navigation() {
 
         ){
             DetailScreen(id = it.arguments?.getInt("id")!!)
-        }
-    }
-}
-
-@Composable
-fun DetailScreen(id:Int) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        Column() {
-            Text(text = id.toString())
         }
     }
 }

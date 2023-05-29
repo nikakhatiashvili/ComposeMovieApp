@@ -1,4 +1,4 @@
-package com.example.movieapp.home.ui
+package com.example.movieapp.ui.theme.home.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
