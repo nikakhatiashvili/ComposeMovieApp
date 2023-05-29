@@ -1,47 +1,40 @@
-package com.example.movieapp.home
+package com.example.movieapp.home.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.movieapp.R
 import com.example.movieapp.domain.MovieResult
+import com.example.movieapp.home.HomeViewModel
+import com.example.movieapp.home.rememberStateWithLifecycle
 
 @Composable
-fun HomeScreen() {
-    HomeScreen(viewModel = hiltViewModel())
+fun HomeScreen(navController: NavController) {
+    HomeScreen(viewModel = hiltViewModel(), navController = navController)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    navController: NavController
 ) {
     val viewState by rememberStateWithLifecycle(viewModel.state)
     Scaffold(modifier) {
@@ -49,7 +42,8 @@ fun HomeScreen(
             Search(
                 state = viewState,
                 modifier = Modifier.wrapContentHeight(),
-                onSearchChanged = { viewModel.onFilterChange(it) }
+                onSearchChanged = { viewModel.onFilterChange(it) },
+                navController = navController
             )
 
         }
@@ -59,7 +53,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun FavoriteCollectionsSection(recordLists: List<MovieResult>) {
+fun FavoriteCollectionsSection(recordLists: List<MovieResult>, navController: NavController) {
     Text(
         text = stringResource(id = R.string.search_results).uppercase(),
         style = MaterialTheme.typography.labelSmall,
@@ -67,46 +61,12 @@ fun FavoriteCollectionsSection(recordLists: List<MovieResult>) {
             .paddingFromBaseline(40.dp)
             .padding(horizontal = 16.dp)
     )
-    SingleRectangularCarousel(records = recordLists)
+    SingleRectangularCarousel(records = recordLists,navController)
 }
 
-@Composable
-fun Search(
-    state: HomeContract.State,
-    modifier: Modifier = Modifier,
-    onSearchChanged: (String) -> Unit = {}
-) {
-    Surface(
-        color = MaterialTheme.colorScheme.background
-    ) {
-        val focusManager = LocalFocusManager.current
-
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Spacer(modifier = Modifier.height(16.dp))
-
-            MyTextField(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                labelResource = R.string.search,
-                value = state.filter,
-                leadingIcon = Icons.Default.Search,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                onValueChange = onSearchChanged
-            )
-
-            if (state.showEmptyState || state.filter.isEmpty()) {
-                EmptyState()
-            } else {
-                ElementsList(state)
-            }
-        }
-    }
-}
 
 @Composable
-private fun EmptyState() {
+fun EmptyState() {
    Box(modifier = Modifier.fillMaxSize()) {
         Text(
             text = stringResource(id = R.string.empty_search),
@@ -124,11 +84,11 @@ private fun Preview() {
 }
 
 @Composable
-private fun ElementsList(state: HomeContract.State) {
+fun ElementsList(state: HomeContract.State, navController: NavController) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-            FavoriteCollectionsSection(recordLists = state.elements)
+            FavoriteCollectionsSection(recordLists = state.elements,navController)
     }
 }
 
