@@ -1,6 +1,7 @@
 package com.example.movieapp.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,10 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,15 +20,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.movieapp.R
-import com.example.movieapp.ui.theme.MovieAppTheme
+import com.example.movieapp.domain.MovieResult
 
 @Composable
 fun HomeScreen() {
@@ -58,9 +59,9 @@ fun HomeScreen(
 }
 
 @Composable
-fun FavoriteCollectionsSection(recordLists: List<Record>) {
+fun FavoriteCollectionsSection(recordLists: List<MovieResult>) {
     Text(
-        text = stringResource(id = R.string.favorite_collections).uppercase(),
+        text = stringResource(id = R.string.search_results).uppercase(),
         style = MaterialTheme.typography.labelSmall,
         modifier = Modifier
             .paddingFromBaseline(40.dp)
@@ -95,168 +96,39 @@ fun Search(
                 onValueChange = onSearchChanged
             )
 
-            FavoriteCollectionsSection(
-                recordLists = listOf(
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                    Record(
-                        "Breaking bad",
-                        R.drawable.ic_launcher_background,
-                        "Created by Vince Gilligan, the series follows the exploits " +
-                                "of Walter White, a modest high school chemistry teacher, who discovers " +
-                                "a new purpose in life" +
-                                " when he learns he has terminal cancer and turns to a l" +
-                                "ife of crime to provide for his family."
-                    ),
-                )
-            )
+            if (state.showEmptyState || state.filter.isEmpty()) {
+                EmptyState()
+            } else {
+                ElementsList(state)
+            }
         }
     }
 }
 
 @Composable
 private fun EmptyState() {
-//   Box(modifier = Modifier.fillMaxSize()) {
-//        Text(
-//            text = stringResource(id = R.string.empty_search),
-//            modifier = Modifier
-//                .padding(48.dp)
-//                .align(Alignment.Center),
-//            textAlign = TextAlign.Center,
-//        )
-//  }
+   Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = stringResource(id = R.string.empty_search),
+            modifier = Modifier
+                .padding(48.dp)
+                .align(Alignment.Center),
+            textAlign = TextAlign.Center,
+        )
+  }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-    MovieAppTheme() {
-        FavoriteCollectionsSection(
-            recordLists = listOf(
-
-                Record(
-                    "name",
-                    R.drawable.ic_launcher_background,
-                    "Created by Vince Gilligan, the series follows the exploits " +
-                            "of Walter White, a modest high school chemistry teacher, who discovers " +
-                            "a new purpose in life" +
-                            " when he learns he has terminal cancer and turns to a l" +
-                            "ife of crime to provide for his family."
-                ),
-                Record(
-                    "name",
-                    R.drawable.ic_launcher_background,
-                    "Created by Vince Gilligan, the series follows the exploits " +
-                            "of Walter White, a modest high school chemistry teacher, who discovers " +
-                            "a new purpose in life" +
-                            " when he learns he has terminal cancer and turns to a l" +
-                            "ife of crime to provide for his family."
-                ),
-            )
-        )
-    }
 }
 
 @Composable
 private fun ElementsList(state: HomeContract.State) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
     ) {
-//        state.elements.forEach { element ->
-//            when (element) {
-//                is HomeContract.ElementType.Favorite -> FavoriteCollectionsSection(recordLists = element.list)
-//                is HomeContract.ElementType.AlignYourBody -> AlignYourBodySection(records = element.list)
-//                is HomeContract.ElementType.AlignTourMind -> AlignYourMindSection(records = element.list)
-//            }
-//        }
+            FavoriteCollectionsSection(recordLists = state.elements)
     }
 }
 
@@ -265,7 +137,7 @@ class HomeContract {
 
     data class State(
         val filter: String = "",
-        val elements: List<ElementType> = emptyList(),
+        val elements: List<MovieResult> = emptyList(),
         val showEmptyState: Boolean = true,
     ) {
         companion object {

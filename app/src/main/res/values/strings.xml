@@ -2,6 +2,7 @@
     <string name="app_name">MovieApp</string>
     <string name="search">Search</string>
     <string name="favorite_collections">Favorite Collections</string>
+    <string name="search_results">Search Results</string>
     <string name="align_your_body">Align your body</string>
     <string name="aling_your_mind">Align your mind</string>
 
