@@ -1,7 +1,11 @@
 package com.example.movieapp.di
 
+import com.example.movieapp.data.DetailRepositoryImpl
 import com.example.movieapp.domain.Constants.BASE_URL
 import com.example.movieapp.data.MoviesRepositoryImpl
+import com.example.movieapp.domain.detail.DetailMovieUseCase
+import com.example.movieapp.domain.detail.DetailRepository
+import com.example.movieapp.domain.detail.DetailsService
 import com.example.movieapp.domain.search.GetMoviesUseCase
 import com.example.movieapp.domain.search.MoviesRepository
 import com.example.movieapp.domain.search.SearchService
@@ -11,6 +15,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -19,15 +25,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object MovieModule {
 
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
     @Provides
     @Singleton
-    fun provideBaseRetrofit(): Retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+    fun provideBaseRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder().baseUrl(BASE_URL)
         .addConverterFactory(
             MoshiConverterFactory.create(
                 Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
             )
-        ).build()
+        ).client(okHttpClient).build()
 
+    @Provides
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .build()
     @Provides
     @Singleton
     fun provideSearchService(baseRetrofit: Retrofit): SearchService =
@@ -42,4 +55,21 @@ object MovieModule {
     fun provideMovieRepository(searchService: SearchService): MoviesRepository {
         return MoviesRepositoryImpl(searchService)
     }
+
+    @Provides
+    fun provideDetailRepository(detailsService: DetailsService):DetailRepository{
+        return DetailRepositoryImpl(detailsService = detailsService)
+    }
+
+    @Provides
+    fun provideDetailUseCases(repo: DetailRepository): DetailMovieUseCase {
+        return DetailMovieUseCase(repo)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailService(baseRetrofit: Retrofit): DetailsService =
+        baseRetrofit.create(DetailsService::class.java)
+
+
 }

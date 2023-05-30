@@ -1,4 +1,4 @@
-package com.example.movieapp.domain.detail
+package com.example.movieapp.domain.detail.movie
 
 import com.example.movieapp.domain.detail.movie.SimilarResults
 
