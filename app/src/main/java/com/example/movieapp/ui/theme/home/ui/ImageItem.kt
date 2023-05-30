@@ -1,4 +1,4 @@
-package com.example.movieapp.home
+package com.example.movieapp.ui.theme.home.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,16 +17,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.movieapp.domain.MovieResult
+import com.example.movieapp.domain.search.model.MovieResult
 
-@OptIn(ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RectangularItem(record: MovieResult) {
+fun RectangularItem(
+    record: MovieResult,
+    onCLick:(Int) -> Unit
+) {
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .height(120.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        onClick = {
+            onCLick(record.id!!)
+        }
     ) {
         Row() {
             GlideImage(

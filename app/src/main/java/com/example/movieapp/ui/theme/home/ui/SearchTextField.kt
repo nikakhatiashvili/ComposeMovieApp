@@ -1,6 +1,5 @@
-package com.example.movieapp.home
+package com.example.movieapp.ui.theme.home.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -8,8 +7,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -20,10 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.movieapp.R
-import com.example.movieapp.ui.theme.MovieAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("LongParameterList")
@@ -67,22 +61,3 @@ fun MyTextField(
     )
 }
 
-@Preview(
-    name = "Night Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
-@Preview(
-    name = "Day Mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
-@Composable
-private fun Preview() {
-    MovieAppTheme() {
-        MyTextField(
-            labelResource = R.string.app_name,
-            value = "",
-            leadingIcon = Icons.Default.Search,
-            onValueChange = { }
-        )
-    }
-}

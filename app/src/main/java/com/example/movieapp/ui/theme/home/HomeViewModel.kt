@@ -1,9 +1,11 @@
-package com.example.movieapp.home
+package com.example.movieapp.ui.theme.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieapp.domain.GetMoviesUseCase
+import com.example.movieapp.domain.search.GetMoviesUseCase
+import com.example.movieapp.ui.theme.home.ui.HomeContract
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,7 +25,7 @@ class HomeViewModel @Inject constructor(
 
     private fun updateList(filter: String) {
         _state.update { it.copy(filter = filter) }
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val records = getMoviesUseCase.invoke(filter)
             records.onSuccess {
                 _state.update { currentState ->

@@ -1,13 +1,13 @@
 package com.example.movieapp.data
 
-import com.example.movieapp.domain.MoviesRepository
-import com.example.movieapp.domain.Search
-import com.example.movieapp.domain.SearchService
+import com.example.movieapp.domain.search.MoviesRepository
+import com.example.movieapp.domain.search.model.Search
+import com.example.movieapp.domain.search.SearchService
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
     private val searchService: SearchService
-):MoviesRepository {
+): MoviesRepository {
     override suspend fun getMovies(str: String): Result<Search> {
         try {
             val response = searchService.getMoviesSearch(str)
